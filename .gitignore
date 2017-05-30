@@ -1,0 +1,24 @@
+# Eclipse
+/**/.classpath
+/**/.project
+/**/.settings/
+
+# Intellij
+/**/.idea/
+/**/*.iml
+/**/*.iws
+
+# Mac
+/**/.DS_Store
+
+# Maven
+/log/
+/**/target/
+out/
+
+#webapp
+/**/src/main/webapp/WEB-INF/classes/
+
+# Others
+/bin/
+/**/.myeclipse

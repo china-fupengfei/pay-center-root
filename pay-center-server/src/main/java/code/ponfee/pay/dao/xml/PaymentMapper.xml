@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="code.ponfee.pay.dao.mapper.PaymentMapper">
+    <sql id="baseColumns">
+        payId,orderType,orderNo,orderAmt,channelType,thirdTradeNo,extraData,
+        source,bizType,userId,status,tradeTime,clientIp,remark,createTime
+    </sql>
+
+    <insert id="insert">
+        INSERT INTO tbl_payment(
+            payId,orderType,orderNo,orderAmt,channelType,source,thirdTradeNo,
+            bizType,userId,status,clientIp,remark,createTime,extraData
+        )VALUES(
+            #{payId},#{orderType},#{orderNo},#{orderAmt},#{channelType},#{source},#{thirdTradeNo},
+            #{bizType},#{userId},#{status},#{clientIp},#{remark},#{createTime},#{extraData}
+        )
+    </insert>
+    
+    <update id="updateStatus">
+        UPDATE tbl_payment 
+        SET thirdTradeNo=#{thirdTradeNo},status=#{status},tradeTime=#{tradeTime} 
+        WHERE payId=#{payId} 
+    </update>
+    
+    <select id="getByPayId" parameterType="string" resultType="payment">
+        /*master*/
+        SELECT <include refid="baseColumns"/> 
+        FROM tbl_payment WHERE payId=#{payId} 
+    </select>
+    
+    <select id="checkIsPayed" resultType="boolean">
+        /*master*/
+        SELECT IF(COUNT(1)>0, 1, 0) isPayed FROM tbl_payment 
+        WHERE orderType=#{orderType} AND orderNo=#{orderNo} AND status IN (1,4) 
+    </select>
+    
+    <select id="listPaymentTaskScan" parameterType="map" resultType="payment">
+        /*master*/
+        SELECT payId,status,orderNo,orderAmt,channelType,tradeTime,
+               bizType,userId,clientIp,extraData,retryCount 
+        FROM tbl_payment 
+        WHERE createTime BETWEEN #{beginTime} AND #{endTime} 
+              AND status IN (${status}) AND retryCount=#{retryCount}
+    </select>
+    
+    <update id="updatePaymentTaskScan">
+        UPDATE tbl_payment 
+        SET thirdTradeNo=#{thirdTradeNo}, status=#{turnStatus}, tradeTime=#{tradeTime}, retryCount=retryCount+1
+        WHERE payId=#{payId} AND status=#{originStatus} AND retryCount=#{retryCount}
+    </update>
+    
+    <delete id="clearTimeoutPayment">
+        DELETE FROM tbl_payment
+        WHERE (createTime BETWEEN DATE_SUB(now(), INTERVAL 30 DAY) AND DATE_SUB(now(), INTERVAL 15 DAY)) 
+              AND status=0 AND retryCount>=4 
+    </delete>
+</mapper>

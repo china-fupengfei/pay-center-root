@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="code.ponfee.pay.dao.mapper.RefundMapper">
+
+    <sql id="baseColumns">
+        refundId,payId,refundType,refundNo,refundAmt,refundRate,extraData,
+        handleFee,refundReason,status,thirdRefundNo,remark,createTime,tradeTime
+    </sql>
+    
+    <insert id="insert">
+        INSERT INTO tbl_refund(
+            refundId,payId,refundType,refundNo,refundAmt,refundRate,extraData,
+            handleFee,refundReason,status,thirdRefundNo,remark,createTime,tradeTime
+        )VALUES(
+            #{refundId},#{payId},#{refundType},#{refundNo},#{refundAmt},#{refundRate},#{extraData},
+            #{handleFee},#{refundReason},#{status},#{thirdRefundNo},#{remark},#{createTime},#{tradeTime}
+        )
+    </insert>
+    
+    <update id="updateStatus">
+        UPDATE tbl_refund 
+        SET thirdRefundNo=#{thirdRefundNo},status=#{status},tradeTime=#{tradeTime} 
+        WHERE refundId=#{refundId} /*AND status=0*/
+    </update>
+    
+    <select id="getByRefundId" parameterType="string" resultType="refund">
+        /*master*/
+        SELECT <include refid="baseColumns"/> 
+        FROM tbl_refund WHERE refundId=#{refundId} 
+    </select>
+    
+    <select id="getRefundByRefundNo" resultType="refund">
+        /*master*/
+        SELECT <include refid="baseColumns"/> 
+        FROM tbl_refund WHERE refundType=#{refundType} AND refundNo=#{refundNo}
+    </select>
+    
+    <select id="listByPayId" parameterType="string" resultType="refund">
+        /*master*/
+        SELECT <include refid="baseColumns"/> 
+        FROM tbl_refund WHERE payId=#{payId} 
+    </select>
+    
+    <select id="listRefundTaskScan" parameterType="map" resultType="refund">
+        /*master*/
+        SELECT payId,refundId,status,refundType,refundNo,refundAmt,retryCount 
+        FROM tbl_refund 
+        WHERE createTime BETWEEN #{beginTime} AND #{endTime} 
+              AND status IN (${status}) AND retryCount=#{retryCount}
+    </select>
+    
+    <update id="updateRefundTaskScan">
+        UPDATE tbl_refund 
+        SET thirdRefundNo=#{thirdRefundNo}, status=#{turnStatus}, tradeTime=#{tradeTime}, retryCount=retryCount+1
+        WHERE refundId=#{refundId} AND status=#{originStatus} AND retryCount=#{retryCount}
+    </update>
+</mapper>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="code.ponfee.pay.dao.mapper.BillMapper">
+
+    <select id="getPayBill" parameterType="string" resultType="orderBill" useCache="false" flushCache="true">
+        SELECT bizType,orderType bizOrderType,orderNo bizOrderNo,orderAmt amount,
+               channelType payChannel,thirdTradeNo thirdDealNo,userId,status,tradeTime
+        FROM tbl_payment WHERE payId=#{payId} AND status!=0 
+    </select>
+
+    <select id="listRefundBill" parameterType="string" resultType="orderBill">
+        SELECT refundType bizOrderType,refundNo bizOrderNo,refundAmt amount,
+               thirdRefundNo thirdDealNo,status,tradeTime
+        FROM tbl_refund WHERE payId=#{payId}
+    </select>
+    
+    <select id="queryRefundsForList" parameterType="map" resultType="refund">
+        SELECT refundId,payId,refundType,refundNo,refundAmt,
+               refundRate,status,createTime,tradeTime
+        FROM tbl_refund
+        <where>
+            <if test="refundType!=null">refundType=#{refundType}</if>
+            <if test="beginTime!=null">AND createTime>=#{beginTime}</if>
+            <if test="endTime!=null">AND createTime&lt;=#{endTime}</if>
+        </where>
+    </select>
+    
+    <!-- 用于手动退测试支付时的钱款(测试用) -->
+    <!-- <select id="listPayment4testPay" resultType="payment">
+        SELECT payId,orderType,orderNo,orderAmt,channelType,thirdTradeNo,extraData,
+               source,bizType,userId,status,tradeTime,clientIp,remark,createTime
+        FROM tbl_payment WHERE status!=0 AND createTime BETWEEN #{beginDate} AND #{endDate}
+    </select>
+    <select id="listRefund4testPay" resultType="refund">
+        SELECT refundId,payId,refundType,refundNo,refundAmt,refundRate,extraData,
+               refundReason,status,thirdRefundNo,remark,createTime,tradeTime
+        FROM tbl_refund WHERE payId=#{payId}
+    </select> -->
+</mapper>

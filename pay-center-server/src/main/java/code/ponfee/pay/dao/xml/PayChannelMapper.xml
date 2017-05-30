@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="code.ponfee.pay.dao.mapper.PayChannelMapper">
+    <sql id="baseColumns">
+        aid,channelType,channelName,source,orders,
+        status,description,createTime,updateTime
+    </sql>
+
+    <!-- <insert id="insert">
+        INSERT INTO tbl_pay_channel(
+            channelType,channelName,source,orders,status,description,createTime
+        )VALUES(
+            #{channelType},#{channelName},#{source},#{orders},#{status},#{description},now()
+        )
+    </insert> -->
+    
+    <select id="listBySource" parameterType="string" resultType="payChannel">
+        SELECT <include refid="baseColumns"/> 
+        FROM tbl_pay_channel WHERE source=#{source} 
+        ORDER BY orders ASC 
+    </select>   
+</mapper>
