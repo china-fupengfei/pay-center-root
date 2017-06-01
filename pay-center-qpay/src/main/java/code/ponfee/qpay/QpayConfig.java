@@ -13,9 +13,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import code.ponfee.commons.jce.cert.X509CertUtils;
 import code.ponfee.commons.jce.security.KeyStoreResolver;
 import code.ponfee.commons.jce.security.KeyStoreResolver.KeyStoreType;
-import code.ponfee.commons.jce.x509.X509CertUtils;
 import code.ponfee.commons.resource.ResourceLoaderFacade;
 
 /**
