@@ -10,6 +10,8 @@
     <packaging>jar</packaging>
 
     <properties>
+        <!-- dubbo配置要求：要与pay-center-provider.xml文件名对应上 -->
+        <dubbo.provider.name>pay-center-provider</dubbo.provider.name>
         <spring.version>4.3.8.RELEASE</spring.version>
     </properties>
     <dependencies>
@@ -152,21 +154,11 @@
     </dependencies>
     <profiles>
         <profile>
-            <id>local</id>
+            <id>develop</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-            <distributionManagement>
-                <repository>
-                    <id>mvn.repository</id>
-                    <name>mvn.repository</name>
-                    <url>http://127.0.0.1:8081/nexus/content/repositories/thirdparty/</url>
-                    <layout>default</layout>
-                </repository>
-            </distributionManagement>
             <properties>
-                <!-- dubbo 要与pay-center-provider.xml文件名对应上 -->
-                <dubbo.provider.name>pay-center-provider</dubbo.provider.name>
                 <dubbo.registry.url><![CDATA[127.0.0.1:2181]]></dubbo.registry.url>
                 <dubbo.provider.port><![CDATA[30140]]></dubbo.provider.port>
                 <dubbo.provider.timeout><![CDATA[100000]]></dubbo.provider.timeout>
@@ -179,13 +171,37 @@
 
                 <!-- redis -->
                 <redis.pay-center.configstr><![CDATA[127.0.0.1:6379;127.0.0.1:6380;]]></redis.pay-center.configstr>
-                <redis.pay-center.password><![CDATA[]]>
-                </redis.pay-center.password>
+                <redis.pay-center.password></redis.pay-center.password>
 
                 <!-- log -->
                 <log4j.rootLogger><![CDATA[WARN,R,std]]></log4j.rootLogger>
                 <log4j.logLevel><![CDATA[WARN]]></log4j.logLevel>
-                <log4j.R.file><![CDATA[/opt/logs/service/pay-center/pay-center-server.log]]></log4j.R.file>
+                <log4j.R.file><![CDATA[/opt/logs/service/${project.artifactId}/${project.artifactId}.log]]></log4j.R.file>
+                <log4j.socket.host><![CDATA[127.0.0.1]]></log4j.socket.host>
+                <log4j.socket.port><![CDATA[7000]]></log4j.socket.port>
+            </properties>
+        </profile>
+        <profile>
+            <id>product</id>
+            <properties>
+                <dubbo.registry.url><![CDATA[127.0.0.1:2181]]></dubbo.registry.url>
+                <dubbo.provider.port><![CDATA[30140]]></dubbo.provider.port>
+                <dubbo.provider.timeout><![CDATA[100000]]></dubbo.provider.timeout>
+                <dubbo.monitor.address><![CDATA[127.0.0.1:7070]]></dubbo.monitor.address>
+
+                <!-- mysql -->
+                <mysql.pay.write.url><![CDATA[jdbc:mysql://127.0.0.1:3306/db_pay_center?useUnicode=true&amp;autoReconnect=true&amp;characterEncoding=UTF-8]]></mysql.pay.write.url>
+                <mysql.pay.write.username><![CDATA[root]]></mysql.pay.write.username>
+                <mysql.pay.write.password><![CDATA[mysql]]></mysql.pay.write.password>
+
+                <!-- redis -->
+                <redis.pay-center.configstr><![CDATA[127.0.0.1:6379;127.0.0.1:6380;]]></redis.pay-center.configstr>
+                <redis.pay-center.password></redis.pay-center.password>
+
+                <!-- log -->
+                <log4j.rootLogger><![CDATA[WARN,R,std]]></log4j.rootLogger>
+                <log4j.logLevel><![CDATA[WARN]]></log4j.logLevel>
+                <log4j.R.file><![CDATA[/opt/logs/service/${project.artifactId}/${project.artifactId}.log]]></log4j.R.file>
                 <log4j.socket.host><![CDATA[127.0.0.1]]></log4j.socket.host>
                 <log4j.socket.port><![CDATA[7000]]></log4j.socket.port>
             </properties>
@@ -193,7 +209,6 @@
     </profiles>
 
     <build>
-        <finalName>pay-center-server</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -213,17 +228,12 @@
             </resource>
             <resource>
                 <directory>src/main/java</directory>
+                <filtering>false</filtering>
                 <includes>
                     <include>**/*.xml</include>
                 </includes>
             </resource>
         </resources>
-        <testResources>
-            <testResource>
-                <directory>src/test/resources</directory>
-                <filtering>false</filtering>
-            </testResource>
-        </testResources>
         <plugins>
             <!-- 打包，指定main方法 -->
             <plugin>

@@ -55,7 +55,7 @@
 
     <profiles>
         <profile>
-            <id>local</id>
+            <id>develop</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
@@ -69,6 +69,20 @@
             </distributionManagement>
             <properties>
                 <publish.version>1.0.0-SNAPSHOT</publish.version>
+            </properties>
+        </profile>
+        <profile>
+            <id>product</id>
+            <distributionManagement>
+                <repository>
+                    <id>mvn.repository</id>
+                    <name>mvn.repository</name>
+                    <url>http://127.0.0.1:8081/nexus/content/repositories/thirdparty/</url>
+                    <layout>default</layout>
+                </repository>
+            </distributionManagement>
+            <properties>
+                <publish.version>1.0.0</publish.version>
             </properties>
         </profile>
     </profiles>
