@@ -61,10 +61,8 @@
             </activation>
             <distributionManagement>
                 <repository>
-                    <id>mvn.repository</id>
-                    <name>mvn.repository</name>
-                    <url>http://127.0.0.1:8081/nexus/content/repositories/thirdparty/</url>
-                    <layout>default</layout>
+                    <id>snapshots</id>
+                    <url>http://127.0.0.1:8081/nexus/content/repositories/snapshots</url>
                 </repository>
             </distributionManagement>
             <properties>
@@ -75,10 +73,8 @@
             <id>product</id>
             <distributionManagement>
                 <repository>
-                    <id>mvn.repository</id>
-                    <name>mvn.repository</name>
-                    <url>http://127.0.0.1:8081/nexus/content/repositories/thirdparty/</url>
-                    <layout>default</layout>
+                    <id>releases</id>
+                    <url>http://127.0.0.1:8081/nexus/content/repositories/releases</url>
                 </repository>
             </distributionManagement>
             <properties>
@@ -88,7 +84,7 @@
     </profiles>
 
     <build>
-        <finalName>${project.artifactId}</finalName>
+        <finalName>${project.artifactId}-${publish.version}</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
