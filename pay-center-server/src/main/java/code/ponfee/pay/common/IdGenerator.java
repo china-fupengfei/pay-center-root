@@ -9,7 +9,7 @@ import org.apache.commons.lang3.time.FastDateFormat;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import code.ponfee.commons.util.ObjectUtils;
+import code.ponfee.commons.util.Strings;
 import code.ponfee.pay.enums.BizType;
 import code.ponfee.pay.enums.ChannelType;
 import code.ponfee.pay.enums.TradeType;
@@ -68,7 +68,7 @@ public class IdGenerator {
         } else {
             buf.append(0);
         }
-        buf.append(ObjectUtils.generateIEMECode(buf.toString())); // 校验码1位
+        buf.append(Strings.iemeCode(buf.toString())); // 校验码1位
         return buf.toString();
     }
 
