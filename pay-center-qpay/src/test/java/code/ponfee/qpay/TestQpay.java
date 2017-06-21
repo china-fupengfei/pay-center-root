@@ -26,7 +26,7 @@ public class TestQpay {
         req.setNotifyUrl("http://www.12308.com");
         req.setOutTradeNo(String.valueOf(System.currentTimeMillis()));
         req.setSpbillCreateIp("127.0.0.1");
-        req.setTimeExpire(Dates.addMinutes(new Date(), 30));
+        req.setTimeExpire(Dates.plusMinutes(new Date(), 30));
         req.setTimeStart(new Date());
         req.setTotalFee(1);
         String s = qpay.pays().nativePay(req);
@@ -40,7 +40,7 @@ public class TestQpay {
         req.setNotifyUrl("http://www.12308.com");
         req.setOutTradeNo(String.valueOf(System.currentTimeMillis()));
         req.setSpbillCreateIp("127.0.0.1");
-        req.setTimeExpire(Dates.addMinutes(new Date(), 30));
+        req.setTimeExpire(Dates.plusMinutes(new Date(), 30));
         req.setTimeStart(new Date());
         req.setTotalFee(1);
         String s = qpay.pays().appPay(req);
