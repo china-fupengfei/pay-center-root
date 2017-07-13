@@ -12,7 +12,7 @@
     <properties>
         <!-- dubbo配置要求：要与pay-center-provider.xml文件名对应上 -->
         <dubbo.provider.name>pay-center-provider</dubbo.provider.name>
-        <spring.version>4.3.8.RELEASE</spring.version>
+        <spring.version>4.3.9.RELEASE</spring.version>
     </properties>
     <dependencies>
         <!-- spring framework -->

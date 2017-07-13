@@ -14,7 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import code.ponfee.commons.json.Jsons;
-import code.ponfee.commons.model.Pager;
+import code.ponfee.commons.model.Pagination;
 import code.ponfee.commons.model.Result;
 import code.ponfee.commons.util.Dates;
 import code.ponfee.pay.dto.RefundApplyResult;
@@ -53,7 +53,7 @@ public class TestBillService {
         params.put("refundType", "1");
         //params.put("pageSize", 1);
         //params.put("pageNum", 2);
-        Result<Pager<Refund>> result = dubboPayService.queryRefundsForPage(params);
+        Result<Pagination<Refund>> result = dubboPayService.queryRefundsForPage(params);
         System.out.println(Jsons.NORMAL.stringify(result));
     }
 

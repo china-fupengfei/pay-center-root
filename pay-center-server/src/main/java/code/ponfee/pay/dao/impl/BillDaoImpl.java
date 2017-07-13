@@ -8,7 +8,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Repository;
 
 import code.ponfee.commons.model.PageHandler;
-import code.ponfee.commons.model.Pager;
+import code.ponfee.commons.model.Pagination;
 import code.ponfee.pay.dao.IBillDao;
 import code.ponfee.pay.dao.mapper.BillMapper;
 import code.ponfee.pay.model.OrderBill;
@@ -31,9 +31,9 @@ public class BillDaoImpl implements IBillDao {
     }
 
     @Override
-    public Pager<Refund> queryRefundsForPage(Map<String, ?> params) {
+    public Pagination<Refund> queryRefundsForPage(Map<String, ?> params) {
         PageHandler.NORMAL.handle(params);
-        return new Pager<>(billMapper.queryRefundsForList(params));
+        return new Pagination<>(billMapper.queryRefundsForList(params));
     }
 
     /*用于手动退测试支付时的钱款*/

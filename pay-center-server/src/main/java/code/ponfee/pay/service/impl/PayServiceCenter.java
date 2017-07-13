@@ -55,7 +55,7 @@ import code.ponfee.commons.jedis.JedisClient;
 import code.ponfee.commons.jedis.JedisLock;
 import code.ponfee.commons.json.Jsons;
 import code.ponfee.commons.log.LogAnnotation;
-import code.ponfee.commons.model.Pager;
+import code.ponfee.commons.model.Pagination;
 import code.ponfee.commons.model.Result;
 import code.ponfee.commons.util.Dates;
 import code.ponfee.pay.common.IdGenerator;
@@ -558,7 +558,7 @@ public class PayServiceCenter implements IPayService {
         @Constraint(field = PARAM_REFUND_TYPE, regExp = "^(\\d{1,2})$"),
         @Constraint(field = "beginTime", tense = Tense.PAST)
     })
-    public @Override Result<Pager<Refund>> queryRefundsForPage(Map<String, ?> params) {
+    public @Override Result<Pagination<Refund>> queryRefundsForPage(Map<String, ?> params) {
         int errCode = PayResultCode.ILLEGAL_ARGS_ERR.getCode();
         if (params.get("endTime") == null) {
             return new Result<>(errCode, "结束时间不能为空");
