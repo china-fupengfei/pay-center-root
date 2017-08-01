@@ -9,7 +9,7 @@ import code.ponfee.commons.http.Http;
 import code.ponfee.commons.http.HttpParams;
 import code.ponfee.commons.json.Jsons;
 import code.ponfee.commons.reflect.GenericUtils;
-import code.ponfee.commons.xml.XmlMaps;
+import code.ponfee.commons.xml.XmlMap;
 import code.ponfee.tenpay.model.TenpayField;
 import code.ponfee.tenpay.model.pay.AppPayRequest;
 import code.ponfee.tenpay.model.pay.AppPayResponse;
@@ -49,7 +49,7 @@ public class Pays extends Component {
         reqMap.remove(TenpayField.SIGN_TYPE);
         String requestBody = HttpParams.buildParams(reqMap, tenpay.getInputCharset());
         Http http = Http.post(APP_PAY_URL).data(requestBody);
-        Map<String, String> respMap = new XmlMaps(http.request()).toMap();
+        Map<String, String> respMap = new XmlMap(http.request()).toMap();
 
         // 判断是否成功
         if (StringUtils.isNotEmpty(respMap.get(TenpayField.TOKEN_ID))) {

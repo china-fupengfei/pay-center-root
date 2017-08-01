@@ -9,8 +9,8 @@ import code.ponfee.commons.http.HttpParams;
 import code.ponfee.commons.jce.hash.HashUtils;
 import code.ponfee.commons.json.Jsons;
 import code.ponfee.commons.reflect.GenericUtils;
-import code.ponfee.commons.xml.XmlMaps;
-import code.ponfee.commons.xml.XmlReaders;
+import code.ponfee.commons.xml.XmlMap;
+import code.ponfee.commons.xml.XmlReader;
 import code.ponfee.tenpay.exception.TenPayException;
 import code.ponfee.tenpay.model.TenpayField;
 import code.ponfee.tenpay.model.TenpayRequest;
@@ -155,7 +155,7 @@ public abstract class Component {
      * @return
      */
     private Map<String, String> process(final String resp) {
-        XmlReaders readers = XmlReaders.create(resp);
+        XmlReader readers = XmlReader.create(resp);
 
         // 判断返回结果
         if (SUCCESS_CODE != readers.getNodeInt(TenpayField.RET_CODE)) {
@@ -163,7 +163,7 @@ public abstract class Component {
         }
 
         // 验签
-        Map<String, String> respMap = new XmlMaps(readers).toMap();
+        Map<String, String> respMap = new XmlMap(readers).toMap();
         if (!doVerifySign(respMap)) {
             int code = Integer.parseInt(respMap.get(TenpayField.RET_CODE).toString());
             throw new TenPayException(code, respMap.get(TenpayField.RET_MSG));

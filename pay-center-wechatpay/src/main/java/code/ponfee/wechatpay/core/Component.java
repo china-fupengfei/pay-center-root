@@ -19,8 +19,8 @@ import code.ponfee.commons.http.Http;
 import code.ponfee.commons.http.HttpParams;
 import code.ponfee.commons.jce.hash.HashUtils;
 import code.ponfee.commons.json.Jsons;
-import code.ponfee.commons.xml.XmlMaps;
-import code.ponfee.commons.xml.XmlReaders;
+import code.ponfee.commons.xml.XmlMap;
+import code.ponfee.commons.xml.XmlReader;
 import code.ponfee.wechatpay.exception.WechatpayException;
 
 /**
@@ -35,14 +35,14 @@ public abstract class Component {
     }
 
     protected Map<String, String> doPost(final String url, final Map<String, String> params) {
-        String requestBody = new XmlMaps(params).toXml();
+        String requestBody = new XmlMap(params).toXml();
         String resp = Http.post(url).data(requestBody).request();
         Map<String, String> respMap = process(resp);
         return respMap;
     }
 
     protected <T> T doHttpsPost(final String url, final Map<String, String> params, Class<T> respClazz) {
-        String requestBody = new XmlMaps(params).toXml();
+        String requestBody = new XmlMap(params).toXml();
         String resp = Http.post(url).data(requestBody).setSSLSocketFactory(wechatpay.getSocketFactory()).request();
         Map<String, String> respMap = process(resp);
         return Jsons.NORMAL.parse(Jsons.NORMAL.stringify(respMap), respClazz);
@@ -54,7 +54,7 @@ public abstract class Component {
      * @return 若成功，返回对应Reader，反之抛WepayException
      */
     private Map<String, String> process(final String xml) {
-        XmlReaders readers = XmlReaders.create(xml);
+        XmlReader readers = XmlReader.create(xml);
         if (!SUCCESS.equals(readers.getNodeText(RETURN_CODE))) {
             throw new WechatpayException(readers.getNodeText(RETURN_CODE), readers.getNodeText(RETURN_MSG));
         }
@@ -63,7 +63,7 @@ public abstract class Component {
             throw new WechatpayException(readers.getNodeText(ERR_CODE), readers.getNodeText(ERR_CODE_DES));
         }
 
-        Map<String, String> resp = new XmlMaps(readers).toMap();
+        Map<String, String> resp = new XmlMap(readers).toMap();
         if (!doVerifySign(resp)) {
             throw new WechatpayException("invalid signature: ", xml);
         }

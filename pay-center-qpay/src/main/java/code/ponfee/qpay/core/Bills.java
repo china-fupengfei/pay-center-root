@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import code.ponfee.commons.http.Http;
-import code.ponfee.commons.xml.XmlMaps;
+import code.ponfee.commons.xml.XmlMap;
 import code.ponfee.qpay.exception.QpayException;
 import code.ponfee.qpay.model.bill.BillDownRequest;
 import code.ponfee.qpay.model.bill.BillDownResult;
@@ -67,7 +67,7 @@ public final class Bills extends Component {
     }
 
     private BillDownResult download(BillDownRequest request) {
-        String data = new XmlMaps(super.buildReqParams(request)).toXml();
+        String data = new XmlMap(super.buildReqParams(request)).toXml();
         String billData = Http.post(DOWN_URL).data(data).request();
         if (billData.startsWith("<xml>")) {
             throw new QpayException("download bill fail: " + billData);

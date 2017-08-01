@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import code.ponfee.commons.http.Http;
 import code.ponfee.commons.http.HttpParams;
 import code.ponfee.commons.util.Preconditions;
-import code.ponfee.commons.xml.XmlReaders;
+import code.ponfee.commons.xml.XmlReader;
 import code.ponfee.alipay.exception.AlipayException;
 import code.ponfee.alipay.model.enums.AlipayField;
 import code.ponfee.alipay.model.enums.PayType;
@@ -150,7 +150,7 @@ public class Pays extends Component {
 
         Http http = Http.post(Alipay.GATEWAY + AlipayField.INPUT_CHARSET.field() + "=" + alipay.inputCharset);
         String respStr = http.params(params).request();
-        XmlReaders reader = XmlReaders.create(respStr);
+        XmlReader reader = XmlReader.create(respStr);
         String tradeXPath = "/alipay/response/trade/";
 
         if ("T".equals(reader.getNodeText("is_success"))) {

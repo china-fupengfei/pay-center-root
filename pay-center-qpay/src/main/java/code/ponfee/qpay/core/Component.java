@@ -10,8 +10,8 @@ import code.ponfee.commons.http.HttpParams;
 import code.ponfee.commons.jce.hash.HashUtils;
 import code.ponfee.commons.json.Jsons;
 import code.ponfee.commons.reflect.GenericUtils;
-import code.ponfee.commons.xml.XmlMaps;
-import code.ponfee.commons.xml.XmlReaders;
+import code.ponfee.commons.xml.XmlMap;
+import code.ponfee.commons.xml.XmlReader;
 import code.ponfee.qpay.exception.QpayException;
 import code.ponfee.qpay.model.QpayFields;
 import code.ponfee.qpay.model.QpayRequest;
@@ -95,7 +95,7 @@ public abstract class Component {
      * @return
      */
     protected final <T extends QpayResponse> T doHttpPost(String url, QpayRequest req, Class<T> clazz) {
-        String data = new XmlMaps(buildReqParams(req)).toXml();
+        String data = new XmlMap(buildReqParams(req)).toXml();
         String resp = Http.post(url).data(data).request();
         return process(resp, clazz);
     }
@@ -107,7 +107,7 @@ public abstract class Component {
      * @return
      */
     protected final Map<String, String> doHttpPost(String url, QpayRequest req) {
-        String data = new XmlMaps(buildReqParams(req)).toXml();
+        String data = new XmlMap(buildReqParams(req)).toXml();
         String resp = Http.post(url).data(data).request();
         return process(resp);
     }
@@ -120,7 +120,7 @@ public abstract class Component {
      * @return
      */
     protected final <T extends QpayResponse> T doHttpsPost(String url, QpayRequest req, Class<T> clazz) {
-        String data = new XmlMaps(buildReqParams(req)).toXml();
+        String data = new XmlMap(buildReqParams(req)).toXml();
         String resp = Http.post(url).data(data).setSSLSocketFactory(qpay.getSocketFactory()).request();
         return process(resp, clazz);
     }
@@ -131,7 +131,7 @@ public abstract class Component {
      * @return
      */
     private Map<String, String> process(final String resp) {
-        Map<String, String> respMap = new XmlMaps(XmlReaders.create(resp)).toMap();
+        Map<String, String> respMap = new XmlMap(XmlReader.create(resp)).toMap();
 
         if (!respMap.get(QpayFields.RETURN_CODE).equals(ReturnCode.SUCCESS.name()) ||
             !respMap.get(QpayFields.RESULT_CODE).equals(ResultCode.SUCCESS.name())) {

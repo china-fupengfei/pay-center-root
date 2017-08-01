@@ -12,7 +12,7 @@ import org.apache.commons.io.IOUtils;
 
 import code.ponfee.commons.http.Http;
 import code.ponfee.commons.http.HttpParams;
-import code.ponfee.commons.xml.XmlReaders;
+import code.ponfee.commons.xml.XmlReader;
 import code.ponfee.tenpay.exception.TenPayException;
 
 /**
@@ -49,7 +49,7 @@ public class Bills extends Component {
 
             Map<String, Object> result = new LinkedHashMap<>();
             if ("html".equalsIgnoreCase(lines.get(0).trim())) {
-                XmlReaders read = XmlReaders.create(response);
+                XmlReader read = XmlReader.create(response);
                 String[] msg = read.getNodeText("body").split(":");
                 result.put("code", msg[0]);
                 result.put("msg", msg[1]);

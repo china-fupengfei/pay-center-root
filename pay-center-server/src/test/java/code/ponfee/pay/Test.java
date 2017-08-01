@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import code.ponfee.commons.reflect.ClassUtils;
-import code.ponfee.commons.resource.ResourcesScanner;
+import code.ponfee.commons.resource.ResourceScanner;
 
 public class Test {
 
@@ -17,7 +17,7 @@ public class Test {
         
         Set<String> fields;
         Class<?> pre = null;
-        for (Class<?> clazz : new ResourcesScanner("code.ponfee.pay").scan4class()) {
+        for (Class<?> clazz : new ResourceScanner("code.ponfee.pay").scan4class()) {
             fields = new HashSet<>();
             while (!clazz.isInterface() && !clazz.equals(Object.class)) {
                 //System.out.println(clazz.getName());

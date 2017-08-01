@@ -13,8 +13,8 @@ import org.apache.commons.lang3.RandomStringUtils;
 
 import code.ponfee.commons.http.Http;
 import code.ponfee.commons.json.Jsons;
-import code.ponfee.commons.xml.XmlMaps;
-import code.ponfee.commons.xml.XmlReaders;
+import code.ponfee.commons.xml.XmlMap;
+import code.ponfee.commons.xml.XmlReader;
 import code.ponfee.wechatpay.exception.WechatpayException;
 import code.ponfee.wechatpay.model.bill.Bill;
 import code.ponfee.wechatpay.model.bill.BillCount;
@@ -126,9 +126,9 @@ public class Bills extends Component {
         checkNotEmpty(date, "date");
         checkNotNull(type, "bill type can't be null");
         Map<String, String> down = buildDownloadParams(deviceInfo, date, type);
-        String billData = Http.post(DOWNLOAD).data(new XmlMaps(down).toXml()).request();
+        String billData = Http.post(DOWNLOAD).data(new XmlMap(down).toXml()).request();
         if (billData.startsWith("<xml>")) {
-            XmlReaders readers = XmlReaders.create(billData);
+            XmlReader readers = XmlReader.create(billData);
             throw new WechatpayException(readers.getNodeText(WechatpayField.RETURN_CODE), readers.getNodeText(WechatpayField.RETURN_MSG));
         }
         return billData;

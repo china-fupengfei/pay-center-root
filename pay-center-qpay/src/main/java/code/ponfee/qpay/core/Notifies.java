@@ -3,7 +3,7 @@ package code.ponfee.qpay.core;
 import java.util.HashMap;
 import java.util.Map;
 
-import code.ponfee.commons.xml.XmlMaps;
+import code.ponfee.commons.xml.XmlMap;
 import code.ponfee.qpay.model.QpayFields;
 import code.ponfee.qpay.model.enums.ReturnCode;
 
@@ -35,7 +35,7 @@ public class Notifies extends Component {
         resp.put(QpayFields.RETURN_CODE, ReturnCode.SUCCESS.name());
         //resp.put(QpayFields.RETURN_MSG, "OK");
 
-        return new XmlMaps(resp).toXml();
+        return new XmlMap(resp).toXml();
     }
 
     /**
@@ -48,6 +48,6 @@ public class Notifies extends Component {
         resp.put(QpayFields.RETURN_CODE, ReturnCode.FAIL.name());
         resp.put(QpayFields.RETURN_MSG, errMsg);
 
-        return new XmlMaps(resp).toXml();
+        return new XmlMap(resp).toXml();
     }
 }

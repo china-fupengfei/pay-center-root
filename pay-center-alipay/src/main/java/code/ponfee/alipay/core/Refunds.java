@@ -12,7 +12,7 @@ import code.ponfee.commons.http.HttpParams;
 import code.ponfee.commons.util.Dates;
 import code.ponfee.commons.util.Preconditions;
 import code.ponfee.commons.xml.XmlException;
-import code.ponfee.commons.xml.XmlReaders;
+import code.ponfee.commons.xml.XmlReader;
 import code.ponfee.alipay.exception.AlipayException;
 import code.ponfee.alipay.model.enums.AlipayField;
 import code.ponfee.alipay.model.enums.PayType;
@@ -51,7 +51,7 @@ public class Refunds extends Component {
             String url = Alipay.GATEWAY + "_input_charset=" + alipay.inputCharset;
             String params = HttpParams.buildParams(buildRefundParams(request), alipay.inputCharset);
             resp = Http.post(url).data(params).request();
-            XmlReaders reader = XmlReaders.create(resp);
+            XmlReader reader = XmlReader.create(resp);
             return "T".equals(reader.getNodeText("is_success"));
         } catch (XmlException e) {
             throw new AlipayException("invalid ali refund response xml:" + resp, e);

@@ -3,7 +3,7 @@ package code.ponfee.wechatpay.core;
 import java.util.HashMap;
 import java.util.Map;
 
-import code.ponfee.commons.xml.XmlMaps;
+import code.ponfee.commons.xml.XmlMap;
 import code.ponfee.wechatpay.model.common.WechatpayField;
 
 /**
@@ -32,7 +32,7 @@ public class Notifies extends Component {
         Map<String, String> notifyParams = new HashMap<>();
         notifyParams.put(WechatpayField.RETURN_CODE, "SUCCESS");
         notifyParams.put(WechatpayField.RETURN_MSG, "OK");
-        return new XmlMaps(notifyParams).toXml();
+        return new XmlMap(notifyParams).toXml();
     }
 
     /**
@@ -44,6 +44,6 @@ public class Notifies extends Component {
         Map<String, String> notifyParams = new HashMap<>();
         notifyParams.put(WechatpayField.RETURN_CODE, "FAIL");
         notifyParams.put(WechatpayField.RETURN_MSG, errMsg);
-        return new XmlMaps(notifyParams).toXml();
+        return new XmlMap(notifyParams).toXml();
     }
 }
