@@ -99,7 +99,7 @@ public class AlipayService extends PayServiceAdapter {
                 resp = pay.pay().batchPay(ObjectUtils.map2bean(params, BatchPayRequest.class));
                 break;
             default:
-                return new Result<>(ResultCode.ILLEGAL_ARGUMENTS.getCode(), "illegal ChannelType " + channel.name());
+                return new Result<>(ResultCode.ILLEGAL_ARGS.getCode(), "illegal ChannelType " + channel.name());
         }
         return Result.success(new PayApplyResult(resp));
     }
