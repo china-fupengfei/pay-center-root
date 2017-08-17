@@ -1,16 +1,16 @@
 package code.ponfee.alipay.core;
 
+import java.util.Base64;
 import java.util.Map;
 import java.util.Objects;
 
-import code.ponfee.commons.http.Http;
-import code.ponfee.commons.http.HttpParams;
-import code.ponfee.commons.jce.security.RSACryptor;
-import code.ponfee.commons.util.Bytes;
 import code.ponfee.alipay.exception.AlipayException;
 import code.ponfee.alipay.model.enums.AlipayField;
 import code.ponfee.alipay.model.enums.PayType;
 import code.ponfee.alipay.model.enums.SignType;
+import code.ponfee.commons.http.Http;
+import code.ponfee.commons.http.HttpParams;
+import code.ponfee.commons.jce.security.RSACryptor;
 
 /**
  * 验证组件
@@ -46,7 +46,7 @@ public class Verifies extends Component {
                 signing = HttpParams.buildSigning(notifyParams, SIGN_EXCLUDES);
                 return Objects.equals(notifyParams.get(AlipayField.SIGN.field()), md5(signing));
             case RSA:
-                byte[] expectSigned = Bytes.base64Decode(notifyParams.get(AlipayField.SIGN.field()));
+                byte[] expectSigned = Base64.getDecoder().decode(notifyParams.get(AlipayField.SIGN.field()));
                 signing = HttpParams.buildSigning(notifyParams, SIGN_EXCLUDES);
                 try {
                     return RSACryptor.verifySha1(signing.getBytes(alipay.inputCharset), alipay.aliPubKey, expectSigned);

@@ -2,17 +2,17 @@ package code.ponfee.alipay.core;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Base64;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
-import code.ponfee.commons.http.HttpParams;
-import code.ponfee.commons.jce.hash.HashUtils;
-import code.ponfee.commons.jce.security.RSACryptor;
-import code.ponfee.commons.util.Bytes;
 import code.ponfee.alipay.exception.AlipayException;
 import code.ponfee.alipay.model.enums.AlipayField;
 import code.ponfee.alipay.model.enums.SignType;
+import code.ponfee.commons.http.HttpParams;
+import code.ponfee.commons.jce.hash.HashUtils;
+import code.ponfee.commons.jce.security.RSACryptor;
 
 /**
  * 抽象组件
@@ -43,7 +43,7 @@ public abstract class Component {
                 try {
                     signing = HttpParams.buildSigning(payParams, "\"", SIGN_EXCLUDES);
                     byte[] signedBytes = RSACryptor.signSha1(signing.getBytes(alipay.inputCharset), alipay.ptnPriKey);
-                    String signed = URLEncoder.encode(Bytes.base64Encode(signedBytes), alipay.inputCharset);
+                    String signed = URLEncoder.encode(Base64.getEncoder().encodeToString(signedBytes), alipay.inputCharset);
                     return signing + "&sign_type=\"" + SignType.RSA.name() + "\"&sign=\"" + signed + "\"";
                 } catch(Exception e) {
                     throw new AlipayException(e);

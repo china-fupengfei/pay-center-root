@@ -34,8 +34,8 @@ class AlipayConfig {
 
             partner = props.getProperty("partner");
             md5Key = props.getProperty("key.md5");
-            ptnPriKey = RSACryptor.parseB64Pkcs8PrivateKey(props.getProperty("key.rsa.partner.private"));
-            aliPubKey = RSACryptor.parseB64PublicKey(props.getProperty("key.rsa.ali.public"));
+            ptnPriKey = RSACryptor.fromPkcs8PrivateKey(props.getProperty("key.rsa.partner.private"));
+            aliPubKey = RSACryptor.fromPkcs8PublicKey(props.getProperty("key.rsa.ali.public"));
         } catch(Exception e) {
             logger.error("init alipay config error.", e);
             System.exit(1);

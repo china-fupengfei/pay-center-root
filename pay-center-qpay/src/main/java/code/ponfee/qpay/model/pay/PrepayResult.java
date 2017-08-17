@@ -1,12 +1,12 @@
 package code.ponfee.qpay.model.pay;
 
 import java.io.Serializable;
+import java.util.Base64;
 import java.util.Objects;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
 import code.ponfee.commons.jce.hash.HmacUtils;
-import code.ponfee.commons.util.Bytes;
 import code.ponfee.commons.util.Dates;
 
 /**
@@ -96,7 +96,7 @@ public class PrepayResult implements Serializable {
         
         byte[] key = (appKey + "&").getBytes();
         byte[] hashed = HmacUtils.sha1(key, builder.toString().getBytes());
-        this.sig = Bytes.base64Encode(hashed);
+        this.sig = Base64.getEncoder().encodeToString(hashed);
     }
 
     private static String toStr(Object obj) {

@@ -6,7 +6,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
 import code.ponfee.commons.log.LogAnnotation;
-import code.ponfee.commons.log.LoggerAspect;
+import code.ponfee.commons.log.LogRecorder;
 
 /**
  * 支付服务日志
@@ -14,7 +14,7 @@ import code.ponfee.commons.log.LoggerAspect;
  */
 @Component
 @Aspect
-public class PayCenterLogger extends LoggerAspect {
+public class PayCenterLogger extends LogRecorder {
 
     @Around(value = "execution(public * code.ponfee.pay.service.impl.*.*(..)) && @annotation(log)", argNames = "pjp,log")
     @Override

@@ -5,6 +5,7 @@ import static java.net.URLDecoder.decode;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +23,6 @@ import code.ponfee.commons.jce.hash.HashUtils;
 import code.ponfee.commons.jce.security.RSACryptor;
 import code.ponfee.commons.json.Jsons;
 import code.ponfee.commons.reflect.GenericUtils;
-import code.ponfee.commons.util.Bytes;
 import code.ponfee.unionpay.exception.UnionpayException;
 import code.ponfee.unionpay.model.UnionpayField;
 import code.ponfee.unionpay.model.UnionpayRequest;
@@ -181,7 +181,7 @@ public class Component {
             case "SHA1withRSA":
                 try {
                     byte[] bytes = RSACryptor.signSha1(signed.getBytes(pay.getCharset()), pay.getMerPrivateKey());
-                    return Bytes.base64Encode(bytes);
+                    return Base64.getEncoder().encodeToString(bytes);
                 } catch (Exception e) {
                     throw new UnionpayException(e);
                 }

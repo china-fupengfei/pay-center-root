@@ -6,7 +6,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
 import code.ponfee.commons.constrain.Constraints;
-import code.ponfee.commons.constrain.MethodConstraint;
+import code.ponfee.commons.constrain.MethodValidator;
 
 /**
  * 参数验证
@@ -14,7 +14,7 @@ import code.ponfee.commons.constrain.MethodConstraint;
  */
 @Component("payCenterValidator")
 @Aspect
-public class PayCenterValidator extends MethodConstraint {
+public class PayCenterValidator extends MethodValidator {
 
     /**
      * 针对@Constraints注解的方法

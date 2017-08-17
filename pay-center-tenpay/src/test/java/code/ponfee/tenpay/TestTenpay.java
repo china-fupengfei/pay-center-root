@@ -15,7 +15,7 @@ import javax.annotation.Resource;
 import org.junit.Before;
 import org.junit.Test;
 
-import code.ponfee.commons.constrain.FieldConstraint;
+import code.ponfee.commons.constrain.FieldValidator;
 import code.ponfee.commons.json.Jsons;
 import code.ponfee.pay.service.IPayService;
 import code.ponfee.tenpay.core.Tenpay;
@@ -81,7 +81,7 @@ public class TestTenpay {
                     request.setTotalFee(1);
                     request.setSpbillCreateIp("spbillCreateIp");
                     request.setPartner("312312");
-                    FieldConstraint.newInstance().constrain(request);
+                    FieldValidator.newInstance().constrain(request);
                 }
             }).start();
         }
