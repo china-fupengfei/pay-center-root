@@ -1,8 +1,5 @@
 package code.ponfee.wechatpay.core;
 
-import static code.ponfee.commons.util.Preconditions.checkNotEmpty;
-import static code.ponfee.commons.util.Preconditions.checkNotNull;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +7,9 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import com.google.common.base.Preconditions;
 
 import code.ponfee.commons.http.Http;
 import code.ponfee.commons.json.Jsons;
@@ -123,8 +123,8 @@ public class Bills extends Component {
      * @return 账单数据
      */
     public String query(String deviceInfo, String date, BillType type) {
-        checkNotEmpty(date, "date");
-        checkNotNull(type, "bill type can't be null");
+        Preconditions.checkArgument(StringUtils.isNotBlank(date));
+        Preconditions.checkArgument(type != null);
         Map<String, String> down = buildDownloadParams(deviceInfo, date, type);
         String billData = Http.post(DOWNLOAD).data(new XmlMap(down).toXml()).request();
         if (billData.startsWith("<xml>")) {

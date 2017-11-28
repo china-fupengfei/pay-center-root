@@ -39,7 +39,7 @@ public abstract class Component {
      */
     protected Map<String, String> doPost(String url, Map<String, String> params) {
         //String requestBody = HttpParams.buildParams(params, tenpay.getInputCharset());
-        String respXml = Http.post(url).params(params).request();
+        String respXml = Http.post(url).addParam(params).request();
         return process(respXml);
     }
 
@@ -65,7 +65,7 @@ public abstract class Component {
         //String requestBody = HttpParams.buildParams(params, tenpay.getInputCharset());
         //Https post = Https.post(url).bodyCharset(tenpay.getInputCharset()).body(requestBody);
         //String respXml = post.ssLSocketFactory(tenpay.getSocketFactory()).request();
-        String respXml = Http.post(url).params(params).setSSLSocketFactory(tenpay.getSocketFactory()).request();
+        String respXml = Http.post(url).addParam(params).setSSLSocketFactory(tenpay.getSocketFactory()).request();
         return process(respXml);
     }
 

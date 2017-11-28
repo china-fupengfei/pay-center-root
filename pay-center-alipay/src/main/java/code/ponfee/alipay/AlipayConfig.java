@@ -9,7 +9,8 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import code.ponfee.commons.jce.security.RSACryptor;
+import code.ponfee.commons.jce.security.RSAPrivateKeys;
+import code.ponfee.commons.jce.security.RSAPublicKeys;
 import code.ponfee.commons.resource.ResourceLoaderFacade;
 
 /**
@@ -34,8 +35,8 @@ class AlipayConfig {
 
             partner = props.getProperty("partner");
             md5Key = props.getProperty("key.md5");
-            ptnPriKey = RSACryptor.fromPkcs8PrivateKey(props.getProperty("key.rsa.partner.private"));
-            aliPubKey = RSACryptor.fromPkcs8PublicKey(props.getProperty("key.rsa.ali.public"));
+            ptnPriKey = RSAPrivateKeys.fromPkcs8(props.getProperty("key.rsa.partner.private"));
+            aliPubKey = RSAPublicKeys.fromPkcs8(props.getProperty("key.rsa.ali.public"));
         } catch(Exception e) {
             logger.error("init alipay config error.", e);
             System.exit(1);

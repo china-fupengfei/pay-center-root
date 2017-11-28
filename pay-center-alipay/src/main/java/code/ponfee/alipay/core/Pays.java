@@ -6,10 +6,8 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
-import code.ponfee.commons.http.Http;
-import code.ponfee.commons.http.HttpParams;
-import code.ponfee.commons.util.Preconditions;
-import code.ponfee.commons.xml.XmlReader;
+import com.google.common.base.Preconditions;
+
 import code.ponfee.alipay.exception.AlipayException;
 import code.ponfee.alipay.model.enums.AlipayField;
 import code.ponfee.alipay.model.enums.PayType;
@@ -19,6 +17,9 @@ import code.ponfee.alipay.model.pay.PayQueryResponse;
 import code.ponfee.alipay.model.pay.PayRequest;
 import code.ponfee.alipay.model.pay.WapPayRequest;
 import code.ponfee.alipay.model.pay.WebPayRequest;
+import code.ponfee.commons.http.Http;
+import code.ponfee.commons.http.HttpParams;
+import code.ponfee.commons.xml.XmlReader;
 
 /**
  * 支付组件
@@ -149,7 +150,7 @@ public class Pays extends Component {
         super.buildSignParams(params);
 
         Http http = Http.post(Alipay.GATEWAY + AlipayField.INPUT_CHARSET.field() + "=" + alipay.inputCharset);
-        String respStr = http.params(params).request();
+        String respStr = http.addParam(params).request();
         XmlReader reader = XmlReader.create(respStr);
         String tradeXPath = "/alipay/response/trade/";
 
@@ -188,13 +189,13 @@ public class Pays extends Component {
         // 业务参数
         payParams.put(AlipayField.SERVICE.field(), service.value());
 
-        Preconditions.checkNotEmpty(payDetail.getOutTradeNo(), "outTradeNo");
+        Preconditions.checkArgument(StringUtils.isNotBlank(payDetail.getOutTradeNo()));
         payParams.put(AlipayField.OUT_TRADE_NO.field(), payDetail.getOutTradeNo());
 
-        Preconditions.checkNotEmpty(payDetail.getSubject(), "subject");
+        Preconditions.checkArgument(StringUtils.isNotBlank(payDetail.getSubject()));
         payParams.put(AlipayField.SUBJECT.field(), payDetail.getSubject());
 
-        Preconditions.checkNotEmpty(payDetail.getTotalFee(), "totalFee");
+        Preconditions.checkArgument(StringUtils.isNotBlank(payDetail.getTotalFee()));
         payParams.put(AlipayField.TOTAL_FEE.field(), payDetail.getTotalFee());
 
         putIfNotEmpty(payParams, AlipayField.BODY, payDetail.getBody());

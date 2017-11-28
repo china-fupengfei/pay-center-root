@@ -7,18 +7,20 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
-import code.ponfee.commons.http.Http;
-import code.ponfee.commons.http.HttpParams;
-import code.ponfee.commons.util.Dates;
-import code.ponfee.commons.util.Preconditions;
-import code.ponfee.commons.xml.XmlException;
-import code.ponfee.commons.xml.XmlReader;
+import com.google.common.base.Preconditions;
+
 import code.ponfee.alipay.exception.AlipayException;
 import code.ponfee.alipay.model.enums.AlipayField;
 import code.ponfee.alipay.model.enums.PayType;
 import code.ponfee.alipay.model.refund.RefundDetailData;
 import code.ponfee.alipay.model.refund.RefundQueryDetail;
 import code.ponfee.alipay.model.refund.RefundRequest;
+import code.ponfee.commons.http.Http;
+import code.ponfee.commons.http.HttpParams;
+import code.ponfee.commons.util.Dates;
+import code.ponfee.commons.util.ObjectUtils;
+import code.ponfee.commons.xml.XmlException;
+import code.ponfee.commons.xml.XmlReader;
 
 /**
  * 退款组件
@@ -70,7 +72,7 @@ public class Refunds extends Component {
 
         super.buildSignParams(params); // 构建签名参数
         Http http = Http.post(Alipay.GATEWAY + AlipayField.INPUT_CHARSET.field() + "=" + alipay.inputCharset);
-        String respStr = http.params(params).request();
+        String respStr = http.addParam(params).request();
         Map<String, String> map = process(respStr);
         if ("T".equals(map.get("is_success"))) {
             List<RefundQueryDetail> list = new ArrayList<>();
@@ -116,12 +118,12 @@ public class Refunds extends Component {
         refundParams.put(AlipayField.REFUND_DATE.field(), Dates.now("yyyy-MM-dd HH:mm:ss"));
 
         // 退款批次号
-        Preconditions.checkNotEmpty(refundDetail.getBatchNo(), "batchNo");
+        Preconditions.checkArgument(StringUtils.isNotBlank(refundDetail.getBatchNo()));
         refundParams.put(AlipayField.BATCH_NO.field(), refundDetail.getBatchNo());
 
         // 退款明细
         List<RefundDetailData> detailDatas = refundDetail.getDetailDatas();
-        Preconditions.checkNotEmpty(detailDatas, "detail datas");
+        Preconditions.checkArgument(!ObjectUtils.isEmpty(detailDatas));
         refundParams.put(AlipayField.BATCH_NUM.field(), Integer.toString(detailDatas.size()));
         refundParams.put(AlipayField.DETAIL_DATA.field(), refundDetail.formatDetailDatas());
 

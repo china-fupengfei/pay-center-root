@@ -1,11 +1,12 @@
 package code.ponfee.wechatpay.core;
 
-import static code.ponfee.commons.util.Preconditions.checkNotEmpty;
-
 import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import com.google.common.base.Preconditions;
 
 import code.ponfee.commons.json.Jsons;
 import code.ponfee.wechatpay.model.common.WechatpayField;
@@ -54,7 +55,7 @@ public final class Orders extends Component {
      * @return 关闭成功返回true，或抛WepayException
      */
     public Boolean closeOrder(String outTradeNo) {
-        checkNotEmpty(outTradeNo, "outTradeNo");
+        Preconditions.checkArgument(StringUtils.isNotBlank(outTradeNo));
         Map<String, String> closeParams = new TreeMap<>();
         closeParams.put(WechatpayField.OUT_TRADE_NO, outTradeNo);
         buildReqParams(closeParams);

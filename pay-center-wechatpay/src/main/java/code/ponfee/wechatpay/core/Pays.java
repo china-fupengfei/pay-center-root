@@ -1,9 +1,5 @@
 package code.ponfee.wechatpay.core;
 
-import static code.ponfee.commons.util.Preconditions.checkArgument;
-import static code.ponfee.commons.util.Preconditions.checkNotEmpty;
-import static code.ponfee.commons.util.Preconditions.checkNotNull;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
@@ -12,6 +8,9 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import com.google.common.base.Preconditions;
 
 import code.ponfee.commons.util.Dates;
 import code.ponfee.wechatpay.exception.WechatpayException;
@@ -219,19 +218,19 @@ public final class Pays extends Component {
      */
     private void checkJsPayParams(JsPayRequest request) {
         checkPayParams(request);
-        checkNotEmpty(request.getOpenId(), "openId");
+        Preconditions.checkArgument(StringUtils.isNotBlank(request.getOpenId()));
     }
 
     private void checkPayParams(PayRequest request) {
-        checkNotNull(request, "pay detail can't be null");
-        checkNotEmpty(request.getBody(), "body");
-        checkNotEmpty(request.getOutTradeNo(), "outTradeNo");
+        Preconditions.checkArgument(request != null, "pay detail can't be null");
+        Preconditions.checkArgument(StringUtils.isNotBlank(request.getBody()));
+        Preconditions.checkArgument(StringUtils.isNotBlank(request.getOutTradeNo()));
         Integer totalFee = request.getTotalFee();
-        checkArgument(totalFee != null && totalFee > 0, "totalFee must > 0");
-        checkNotEmpty(request.getClientIp(), "clientId");
-        checkNotEmpty(request.getNotifyUrl(), "notifyUrl");
-        checkNotNull(request.getFeeType(), "feeType can't be null");
-        checkNotEmpty(request.getTimeStart(), "timeStart");
+        Preconditions.checkArgument(totalFee != null && totalFee > 0, "totalFee must > 0");
+        Preconditions.checkArgument(StringUtils.isNotBlank(request.getClientIp()));
+        Preconditions.checkArgument(StringUtils.isNotBlank(request.getNotifyUrl()));
+        Preconditions.checkArgument(request.getFeeType() != null, "feeType can't be null");
+        Preconditions.checkArgument(StringUtils.isNotBlank(request.getTimeStart()));
     }
 
     /**

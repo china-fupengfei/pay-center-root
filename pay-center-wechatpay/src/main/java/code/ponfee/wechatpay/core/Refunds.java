@@ -1,7 +1,4 @@
 package code.ponfee.wechatpay.core;
-import static code.ponfee.commons.util.Preconditions.checkNotNull;
-import static code.ponfee.commons.util.Preconditions.checkNotEmpty;
-import static code.ponfee.commons.util.Preconditions.checkPositive;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +7,8 @@ import java.util.TreeMap;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+
+import com.google.common.base.Preconditions;
 
 import code.ponfee.wechatpay.model.common.Coupon;
 import code.ponfee.wechatpay.model.common.WechatpayField;
@@ -152,18 +151,21 @@ public final class Refunds extends Component {
      * @param request 退款请求对象
      */
     private void checkApplyParams(RefundApplyRequest request) {
-        checkNotNull(wechatpay.getSocketFactory(), "merchant sslContext can't be null before apply refund");
-        checkNotNull(request, "apply request can't be null");
+        Preconditions.checkNotNull(wechatpay.getSocketFactory(), "merchant sslContext can't be null before apply refund");
+        Preconditions.checkNotNull(request, "apply request can't be null");
         if (StringUtils.isEmpty(request.getTransactionId())){
-            checkNotEmpty(request.getOutTradeNo(), "transactionId && outTradeNo");
+            Preconditions.checkArgument(StringUtils.isNotBlank(request.getOutTradeNo()), 
+                                        "transactionId && outTradeNo can not be empty");
         }
-        checkNotEmpty(request.getOutRefundNo(), "outRefundNo");
-        checkNotEmpty(request.getOpUserId(), "opUserId");
+        Preconditions.checkArgument(StringUtils.isNotBlank(request.getOutRefundNo()), 
+                                    "outRefundNo can not be empty");
+        Preconditions.checkArgument(StringUtils.isNotBlank(request.getOpUserId()), 
+                                    "opUserId can not be empty");
         Integer totalFee = request.getTotalFee();
         Integer refundFee = request.getRefundFee();
-        checkPositive(totalFee, "totalFee");
-        checkPositive(refundFee, "refundFee");
-        checkPositive(totalFee - refundFee, "totalFee - refundFee");
+        Preconditions.checkArgument(totalFee > 0, "totalFee must be greater than 0");
+        Preconditions.checkArgument(refundFee > 0, "refundFee must be greater than 0");
+        Preconditions.checkArgument(totalFee > refundFee, "totalFee must be greater than refundFee");
     }
 
     /**
