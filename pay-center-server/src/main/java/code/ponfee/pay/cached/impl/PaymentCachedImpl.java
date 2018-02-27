@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import code.ponfee.commons.jedis.JedisClient;
-import code.ponfee.commons.util.ExtendedMessageFormat;
+import code.ponfee.commons.util.MessageFormats;
 import code.ponfee.pay.cached.IPaymentCached;
 import code.ponfee.pay.model.PayChannel;
 
@@ -27,14 +27,14 @@ public class PaymentCachedImpl implements IPaymentCached {
 
     @Override
     public void cachePayChannelBySource(List<PayChannel> list, String source) {
-        String key = ExtendedMessageFormat.formatPair(CACHE_KEY, "source", source);
+        String key = MessageFormats.format(CACHE_KEY, source);
         jedisClient.valueOps().setObject(key.getBytes(), list, defaultCacheSeconds);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public List<PayChannel> getPayChannelBySource(String source) {
-        String key = ExtendedMessageFormat.formatPair(CACHE_KEY, "source", source);
+        String key = MessageFormats.format(CACHE_KEY, source);
         return (List<PayChannel>) jedisClient.valueOps().getObject(key.getBytes(), ArrayList.class, defaultCacheSeconds);
     }
 

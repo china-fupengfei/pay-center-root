@@ -17,7 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import code.ponfee.commons.http.Http;
 import code.ponfee.commons.http.HttpParams;
-import code.ponfee.commons.jce.hash.HashUtils;
+import code.ponfee.commons.jce.digest.DigestUtils;
 import code.ponfee.commons.json.Jsons;
 import code.ponfee.commons.xml.XmlMap;
 import code.ponfee.commons.xml.XmlReader;
@@ -99,7 +99,7 @@ public abstract class Component {
         signing += "&key=" + wechatpay.getAppKey();
         // md5 sign
         try {
-            return HashUtils.md5Hex(signing.toString().getBytes("UTF-8")).toUpperCase();
+            return DigestUtils.md5Hex(signing.toString().getBytes("UTF-8")).toUpperCase();
         } catch(UnsupportedEncodingException e) {
             throw new WechatpayException(e);
         }

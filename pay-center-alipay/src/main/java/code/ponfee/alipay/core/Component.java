@@ -11,7 +11,7 @@ import code.ponfee.alipay.exception.AlipayException;
 import code.ponfee.alipay.model.enums.AlipayField;
 import code.ponfee.alipay.model.enums.SignType;
 import code.ponfee.commons.http.HttpParams;
-import code.ponfee.commons.jce.hash.HashUtils;
+import code.ponfee.commons.jce.digest.DigestUtils;
 import code.ponfee.commons.jce.security.RSACryptor;
 
 /**
@@ -58,7 +58,7 @@ public abstract class Component {
 
     protected String md5(String payString) {
         try {
-            return HashUtils.md5Hex((payString + alipay.md5Key).getBytes(alipay.inputCharset));
+            return DigestUtils.md5Hex((payString + alipay.md5Key).getBytes(alipay.inputCharset));
         } catch(UnsupportedEncodingException e) {
             throw new AlipayException(e);
         }

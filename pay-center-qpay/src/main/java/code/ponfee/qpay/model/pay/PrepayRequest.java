@@ -5,7 +5,7 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import code.ponfee.commons.jce.hash.HashUtils;
+import code.ponfee.commons.jce.digest.DigestUtils;
 import code.ponfee.commons.json.Jsons;
 import code.ponfee.qpay.model.QpayFields;
 import code.ponfee.qpay.model.QpayRequest;
@@ -171,6 +171,6 @@ public class PrepayRequest extends QpayRequest {
         System.out.println(s);
         System.out.println(req.getLimitPay());
         
-        System.out.println(HashUtils.sha512Hex("1".getBytes()));
+        System.out.println(DigestUtils.sha512Hex("1".getBytes()));
     }
 }

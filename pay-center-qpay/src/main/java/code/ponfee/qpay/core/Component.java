@@ -7,7 +7,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 
 import code.ponfee.commons.http.Http;
 import code.ponfee.commons.http.HttpParams;
-import code.ponfee.commons.jce.hash.HashUtils;
+import code.ponfee.commons.jce.digest.DigestUtils;
 import code.ponfee.commons.json.Jsons;
 import code.ponfee.commons.reflect.GenericUtils;
 import code.ponfee.commons.xml.XmlMap;
@@ -163,7 +163,7 @@ public abstract class Component {
      */
     private String md5(String signing, String key) {
         byte[] bytes = (signing + "&key=" + key).getBytes();
-        return HashUtils.md5Hex(bytes).toUpperCase();
+        return DigestUtils.md5Hex(bytes).toUpperCase();
     }
 
 }

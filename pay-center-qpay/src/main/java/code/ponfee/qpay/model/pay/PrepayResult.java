@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
-import code.ponfee.commons.jce.hash.HmacUtils;
+import code.ponfee.commons.jce.digest.HmacUtils;
 import code.ponfee.commons.util.Dates;
 
 /**

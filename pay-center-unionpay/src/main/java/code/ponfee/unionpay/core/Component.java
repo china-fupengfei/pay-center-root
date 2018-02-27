@@ -19,7 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import code.ponfee.commons.http.Http;
 import code.ponfee.commons.http.HttpParams;
-import code.ponfee.commons.jce.hash.HashUtils;
+import code.ponfee.commons.jce.digest.DigestUtils;
 import code.ponfee.commons.jce.security.RSACryptor;
 import code.ponfee.commons.json.Jsons;
 import code.ponfee.commons.reflect.GenericUtils;
@@ -204,7 +204,7 @@ public class Component {
                 return Objects.equals(actualSign, md5(signing));
             case "SHA1withRSA":
                 try {
-                    byte[] bytes = HashUtils.md5(signing.getBytes(pay.getCharset()));
+                    byte[] bytes = DigestUtils.md5(signing.getBytes(pay.getCharset()));
                     RSACryptor.verifySha1(bytes, pay.getUpopPublicKey(), actualSign.getBytes(pay.getCharset()));
                 } catch (Exception e) {
                     throw new UnionpayException(e);
@@ -238,7 +238,7 @@ public class Component {
 
     private String md5(String plain) {
         Charset charset = Charset.forName(pay.getCharset());
-        return HashUtils.md5Hex(plain.toString().getBytes(charset));
+        return DigestUtils.md5Hex(plain.toString().getBytes(charset));
     }
 
     /**
