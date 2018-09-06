@@ -99,7 +99,7 @@ public class AlipayService extends PayServiceAdapter {
                 resp = pay.pay().batchPay(ObjectUtils.map2bean(params, BatchPayRequest.class));
                 break;
             default:
-                return new Result<>(ResultCode.ILLEGAL_ARGS.getCode(), "illegal ChannelType " + channel.name());
+                return new Result<>(ResultCode.BAD_REQUEST.getCode(), "illegal ChannelType " + channel.name());
         }
         return Result.success(new PayApplyResult(resp));
     }
@@ -456,7 +456,7 @@ public class AlipayService extends PayServiceAdapter {
         map.put("body", params.get(PARAM_GOODS_BODY));
 
         Date expireTime = Dates.toDate(params.get(PARAM_EXPIRE_TIME), DEFAULT_DATE_FORMAT);
-        int seconds = Dates.clockdiff(new Date(), expireTime) / 60;
+        int seconds = (int)(Dates.clockdiff(new Date(), expireTime) / 60);
         map.put("expireTime", seconds + "m");
 
         // webPay参数
